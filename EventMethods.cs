@@ -12,7 +12,7 @@ public class EventMethods
         {
             for (var record = reader.ReadEvent(); record != null; record = reader.ReadEvent())
             {
-                allResults.Add(new LogOnRecord(record as EventLogRecord));
+                allResults.Add(new LogOnRecord((EventLogRecord)record));
             }
         }
         return allResults.GroupBy(x => x.TargetUserSid)

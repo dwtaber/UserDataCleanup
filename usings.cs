@@ -2,3 +2,4 @@
 global using System.Diagnostics.Eventing.Reader;
 global using System.Security.Principal;
 global using Microsoft.Win32;
+global using System.Management.Automation;
