@@ -3,10 +3,10 @@ public static class NTAccountExtension
 {
     public static SecurityIdentifier ToSecurityIdentifier(this NTAccount nta)
     {
-        return nta.Translate(typeof(SecurityIdentifier)) as SecurityIdentifier;
+        return (SecurityIdentifier)nta.Translate(typeof(SecurityIdentifier));
     }
 
-    public static bool TryTranslate(this NTAccount nta, out SecurityIdentifier sid)
+    public static bool TryTranslate(this NTAccount nta, out SecurityIdentifier? sid)
     {
         try
         {
