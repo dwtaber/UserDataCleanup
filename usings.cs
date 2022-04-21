@@ -2,6 +2,9 @@
 global using System.Diagnostics.Eventing.Reader;
 global using System.DirectoryServices;
 global using System.DirectoryServices.ActiveDirectory;
+global using System.IO;
 global using System.Management.Automation;
+global using System.Runtime.InteropServices;
 global using System.Security.Principal;
+global using System.Text;
 global using Microsoft.Win32;

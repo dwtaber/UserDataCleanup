@@ -7,14 +7,14 @@ internal class CommonMethods
         return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     }
 
-    public SecurityIdentifier GetComputerDomainSid()
+    public static SecurityIdentifier GetComputerDomainSid()
     {
         var adsi = new DirectoryEntry($"LDAP://{Domain.GetComputerDomain()}");
         var bytes = adsi.Properties["ObjectSid"].Value as byte[];
-        return new SecurityIdentifier(bytes, 0);
+        return bytes != null ? new SecurityIdentifier(bytes, 0) : throw new Exception();
     }
 
-    public string GetComputerDomainNameNoTld()
+    public static string GetComputerDomainNameNoTld()
     {
         return Domain.GetComputerDomain().Name.Split('.')[0];
     }
