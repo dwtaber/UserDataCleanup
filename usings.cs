@@ -1,4 +1,5 @@
 ﻿global using System.Collections.Generic;
+global using System.Diagnostics.CodeAnalysis;
 global using System.Diagnostics.Eventing.Reader;
 global using System.DirectoryServices;
 global using System.DirectoryServices.ActiveDirectory;

@@ -1,6 +1,6 @@
 ﻿namespace UserDataCleanup;
 
-internal class CommonMethods
+public class CommonMethods
 {
     public static bool TestElevated()
     {
