@@ -6,7 +6,7 @@ public static class SecurityIdentifierExtension
         return (NTAccount)sid.Translate(typeof(NTAccount));
     }
 
-    public static bool TryTranslate(this SecurityIdentifier sid, out NTAccount? nta)
+    public static bool TryTranslate(this SecurityIdentifier sid, [NotNullWhen(true)] out NTAccount? nta)
     {
         try
         {

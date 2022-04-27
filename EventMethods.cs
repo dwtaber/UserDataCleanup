@@ -23,7 +23,7 @@ public class EventMethods
     public static List<LogOnRecord> GetRecentDomainLogons(TimeSpan timeSpan)
     {
         return GetRecentLogons(timeSpan)
-            .Where(x => x.TargetUserSid.AccountDomainSid != null)
+            .Where(x => x.TargetUserSid!.AccountDomainSid != null)
             .ToList();
     }
 }
