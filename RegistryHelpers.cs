@@ -1,9 +1,11 @@
 ﻿namespace UserDataCleanup;
 
-public class RegistryMethods
+public class RegistryHelpers
 {
+    public const string HKLM = "HKEY_LOCAL_MACHINE";
     public const string ProfileListSubkey =
         @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList";
+    public static string ProfilesDirectory = GetProfilesDirectory();
 
     public static RegistryKey ProfileList = Registry.LocalMachine.OpenSubKey(ProfileListSubkey)!;
 
@@ -30,8 +32,7 @@ public class RegistryMethods
     {
         if (ProfileList.TryOpenSubKey(name, out var subKey))
         {
-            var bytes = (byte[])subKey.GetValue("Sid");
-            return new SecurityIdentifier(bytes, 0);
+            return GetProfileSid(subKey);
         }
         else
         {
