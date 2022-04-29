@@ -5,9 +5,9 @@ public class RegistryHelpers
     public const string HKLM = "HKEY_LOCAL_MACHINE";
     public const string ProfileListSubkey =
         @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList";
+    public static RegistryKey ProfileList = Registry.LocalMachine.OpenSubKey(ProfileListSubkey)!;
     public static string ProfilesDirectory = GetProfilesDirectory();
 
-    public static RegistryKey ProfileList = Registry.LocalMachine.OpenSubKey(ProfileListSubkey)!;
 
     public static string GetProfilesDirectory()
     {

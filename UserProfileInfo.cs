@@ -28,9 +28,6 @@ public class UserProfileInfo
         RegistryHelpers.TryGetProfileSid(regKey, out var sid);
         Sid = sid;
         ProfilePath = (string?)regKey.GetValue("ProfileImagePath");
-        PathIsStandard = string.Equals(ProfilePath,
-                                            Path.Join(RegistryHelpers.ProfilesDirectory, UserName),
-                                            StringComparison.OrdinalIgnoreCase);
         IsAccountSid = Sid != null ? Sid.IsAccountSid() : false;
         if (Sid != null && Sid.TryTranslate(out var nta))
         {
@@ -43,6 +40,9 @@ public class UserProfileInfo
             DomainName = null;
             UserName = null;
         }
+        PathIsStandard = string.Equals(ProfilePath,
+                                       Path.Join(RegistryHelpers.ProfilesDirectory, UserName),
+                                       StringComparison.OrdinalIgnoreCase);
     }
 
     public static List<UserProfileInfo> GetAll()
