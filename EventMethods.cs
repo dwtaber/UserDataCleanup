@@ -6,6 +6,7 @@ public class EventMethods
     {
         var milliseconds = timeSpan.TotalMilliseconds;
         var xPath = $"*[System[EventID=4624 and TimeCreated[timediff(@SystemTime) <= {milliseconds}]]]";
+        var excludeSystemLogons = "*[EventData[ (Data[@Name='LogonType']=5) ]]";
         var query = new EventLogQuery("Security", PathType.LogName, xPath) { ReverseDirection = true };
         var allResults = new List<LogOnRecord>();
         using (var reader = new EventLogReader(query))
