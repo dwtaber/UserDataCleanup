@@ -1,6 +1,6 @@
 ﻿namespace UserDataCleanup;
 
-public class EventMethods
+public class EventHelpers
 {
     public static List<LogOnRecord> GetRecentLogons(TimeSpan timeSpan)
     {

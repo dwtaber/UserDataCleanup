@@ -41,7 +41,7 @@ public class GetRecentLogons : PSCmdlet
 
     protected override void ProcessRecord()
     {
-        var result = IncludeNonDomainAccounts ? EventMethods.GetRecentLogons(TimeSpan) : EventMethods.GetRecentDomainLogons(TimeSpan);
+        var result = IncludeNonDomainAccounts ? EventHelpers.GetRecentLogons(TimeSpan) : EventHelpers.GetRecentDomainLogons(TimeSpan);
         WriteObject(result, enumerateCollection: true);
     }
 
