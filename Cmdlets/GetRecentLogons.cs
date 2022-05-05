@@ -21,16 +21,7 @@ public class GetRecentLogons : PSCmdlet
     #endregion
 
     protected override void BeginProcessing()
-    {
-        // if (ParameterSetName == "FromDays")
-        // {
-        //     TimeSpan = TimeSpan.FromDays(MaxDays);
-        // }
-        // 
-        // if (ParameterSetName == "FromDate")
-        // {
-        //     TimeSpan = DateTime.Today - FromDate;
-        // }
+    {        
         TimeSpan = ParameterSetName switch
         {
             "FromDays" => TimeSpan.FromDays(MaxDays),
