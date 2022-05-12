@@ -24,7 +24,7 @@ public class XPathTermGroup
             (true, false) => $"({XPathTermsString!})",
             (false, true) => $"({XPathTermGroupsString!})",
             (true, true) => $"({string.Join(separator, XPathTermsString, XPathTermGroupsString)})",
-            (false, false) => ""
+            (false, false) => string.Empty
         };
     }
 }

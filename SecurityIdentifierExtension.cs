@@ -19,4 +19,12 @@ public static class SecurityIdentifierExtension
             return false;
         }
     }
+
+    public static bool IsDomainSubauthority(this SecurityIdentifier sid)
+    {
+        var split = sid.Value.Split("-");
+        var isNTAuth = split[2] == "5";
+        var isNTDomain = split[3] == "21";
+        return isNTAuth && isNTDomain;
+    }
 }

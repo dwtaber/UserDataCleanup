@@ -13,7 +13,7 @@ public class EventHelpers
         var excludeService = new XPathDataTerm(logonType, XPathComparisonOperator.ne, (int)LogonType.Service);
         if (!includeSystemLogons) { eventDataSelector.XPathTerms.Add(excludeSystem); }
         if (!includeServiceLogons) { eventDataSelector.XPathTerms.Add(excludeService); }
-        var xPath = eventDataSelector.XPathTerms.Count > 0 ? string.Join(" and ", systemSelector, eventDataSelector.ToString()) : systemSelector;
+        var xPath = eventDataSelector.XPathTerms.Count > 0 ? $"{systemSelector} and {eventDataSelector}" : systemSelector;
 
         var query = new EventLogQuery("Security", PathType.LogName, xPath) { ReverseDirection = true };
         var allResults = new List<LogOnRecord>();
@@ -29,10 +29,10 @@ public class EventHelpers
                          .ToList();
     }
 
-    public static List<LogOnRecord> GetRecentDomainLogons(TimeSpan timeSpan)
+    public static List<LogOnRecord> GetRecentDomainLogons(TimeSpan timeSpan, bool includeSystemLogons = false, bool includeServiceLogons = false)
     {
-        return GetRecentLogons(timeSpan)
-            .Where(x => x.TargetUserSid!.Value.Split("-")[3] == "21")
+        return GetRecentLogons(timeSpan, includeSystemLogons, includeServiceLogons)
+            .Where(x => x.TargetUserSid!.IsDomainSubauthority())
             .ToList();
     }
 }

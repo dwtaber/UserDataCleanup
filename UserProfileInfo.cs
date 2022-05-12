@@ -7,6 +7,7 @@ public class UserProfileInfo
     public SecurityIdentifier? Sid { get; }
     public string? ProfilePath { get; }
     public bool ProfilePathExists => Directory.Exists(ProfilePath);
+    public bool PathIsInProfilesDirectory { get; }
     public bool PathIsStandard { get; }
     public string? DomainName { get; }
     public string? UserName { get; }
@@ -40,6 +41,11 @@ public class UserProfileInfo
             DomainName = null;
             UserName = null;
         }
+
+        PathIsInProfilesDirectory = Directory.Exists(ProfilePath) && string.Equals(new DirectoryInfo(ProfilePath).Parent?.FullName,
+                                                                                    RegistryHelpers.ProfilesDirectory,
+                                                                                    StringComparison.OrdinalIgnoreCase);
+
         PathIsStandard = string.Equals(ProfilePath,
                                        Path.Join(RegistryHelpers.ProfilesDirectory, UserName),
                                        StringComparison.OrdinalIgnoreCase);
