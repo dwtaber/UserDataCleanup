@@ -7,7 +7,7 @@ public class CommonMethods
         return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     }
 
-    public static SecurityIdentifier GetComputerDomainSid()
+    public static SecurityIdentifier GetComputerJoinedDomainSid()
     {
         var adsi = new DirectoryEntry($"LDAP://{Domain.GetComputerDomain()}");
         var bytes = adsi.Properties["ObjectSid"].Value as byte[];
@@ -17,5 +17,10 @@ public class CommonMethods
     public static string GetComputerDomainNameNoTld()
     {
         return Domain.GetComputerDomain().Name.Split('.')[0];
+    }
+
+    public static SecurityIdentifier GetLocalMachineSid()
+    {
+        return new NTAccount("DefaultAccount").ToSecurityIdentifier().AccountDomainSid!;
     }
 }

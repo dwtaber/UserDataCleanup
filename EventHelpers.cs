@@ -32,7 +32,7 @@ public class EventHelpers
     public static List<LogOnRecord> GetRecentDomainLogons(TimeSpan timeSpan, bool includeSystemLogons = false, bool includeServiceLogons = false)
     {
         return GetRecentLogons(timeSpan, includeSystemLogons, includeServiceLogons)
-            .Where(x => x.TargetUserSid!.IsDomainSubauthority())
+            .Where(x => x.TargetUserSid!.IsDomainSubauthority() && (x.TargetUserSid!.IsLocalMachineDomain() == false))
             .ToList();
     }
 }

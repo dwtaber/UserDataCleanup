@@ -20,11 +20,17 @@ public static class SecurityIdentifierExtension
         }
     }
 
+    public static string[] ToStringArray(this SecurityIdentifier sid) => sid.Value.Split("-");
+
     public static bool IsDomainSubauthority(this SecurityIdentifier sid)
     {
-        var split = sid.Value.Split("-");
+        var split = sid.ToStringArray();
         var isNTAuth = split[2] == "5";
         var isNTDomain = split[3] == "21";
         return isNTAuth && isNTDomain;
     }
+
+    public static bool IsComputerJoinedDomain(this SecurityIdentifier sid) => sid.IsEqualDomainSid(CommonMethods.GetComputerJoinedDomainSid());
+
+    public static bool IsLocalMachineDomain(this SecurityIdentifier sid) => sid.IsEqualDomainSid(CommonMethods.GetLocalMachineSid());
 }

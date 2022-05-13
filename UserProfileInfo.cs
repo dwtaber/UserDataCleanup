@@ -13,13 +13,21 @@ public class UserProfileInfo
     public string? UserName { get; }
     public bool IsAccountSid { get; }
     public DateTime? LastSignOn { get; internal set; }
-    public bool IsEqualDomainSid(SecurityIdentifier domainSid)
+    // public bool IsEqualDomainSid(SecurityIdentifier domainSid)
+    // {
+    //     return Sid != null ? Sid.IsEqualDomainSid(domainSid) : false;
+    // }
+    // public bool IsInComputerJoinedDomain()
+    // {
+    //     return IsEqualDomainSid(CommonMethods.GetComputerJoinedDomainSid());
+    // }
+    public bool IsInComputerJoinedDomain()
     {
-        return Sid != null ? Sid.IsEqualDomainSid(domainSid) : false;
+        return Sid != null && Sid.IsComputerJoinedDomain();
     }
-    public bool IsInComputerdomain()
+    public bool IsInLocalMachineDomain()
     {
-        return IsEqualDomainSid(CommonMethods.GetComputerDomainSid());
+        return Sid != null && Sid.IsLocalMachineDomain();
     }
 
     public UserProfileInfo(RegistryKey regKey)
@@ -29,7 +37,7 @@ public class UserProfileInfo
         RegistryHelpers.TryGetProfileSid(regKey, out var sid);
         Sid = sid;
         ProfilePath = (string?)regKey.GetValue("ProfileImagePath");
-        IsAccountSid = Sid != null ? Sid.IsAccountSid() : false;
+        IsAccountSid = Sid != null && Sid.IsAccountSid();
         if (Sid != null && Sid.TryTranslate(out var nta))
         {
             var splitQualifiedName = nta.Value.Split(@"\");
