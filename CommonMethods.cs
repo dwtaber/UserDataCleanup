@@ -7,11 +7,23 @@ public class CommonMethods
         return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
     }
 
+    public static bool TestUserContextType(ContextType contextType, out SecurityIdentifier sid)
+    {
+        var context = new PrincipalContext(contextType);
+        sid = Principal.FindByIdentity(context, Environment.UserName).Sid;
+        return null != sid;
+    }
+
     public static SecurityIdentifier GetComputerJoinedDomainSid()
     {
-        var adsi = new DirectoryEntry($"LDAP://{Domain.GetComputerDomain()}");
-        var bytes = adsi.Properties["ObjectSid"].Value as byte[];
-        return bytes != null ? new SecurityIdentifier(bytes, 0) : throw new Exception();
+        var context = new PrincipalContext(ContextType.Domain);
+        return Principal.FindByIdentity(context, Environment.MachineName).Sid;
+    }
+
+    public static bool TryGetComputerJoinedDomainSid(out SecurityIdentifier sid)
+    {
+        sid = GetComputerJoinedDomainSid();
+        return sid != null;
     }
 
     public static string GetComputerDomainNameNoTld()

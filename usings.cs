@@ -2,6 +2,7 @@
 global using System.Diagnostics.CodeAnalysis;
 global using System.Diagnostics.Eventing.Reader;
 global using System.DirectoryServices;
+global using System.DirectoryServices.AccountManagement;
 global using System.DirectoryServices.ActiveDirectory;
 global using System.IO;
 global using System.Management.Automation;
