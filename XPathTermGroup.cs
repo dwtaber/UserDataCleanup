@@ -5,14 +5,14 @@ public class XPathTermGroup
     public List<XPathDataTerm> XPathTerms { get; set; } = new List<XPathDataTerm>();
     public List<XPathTermGroup> XPathTermGroups { get; set; } = new List<XPathTermGroup>();
     public XPathBooleanOperator XPathBooleanOperator { get; set; }
-    internal string separator => $" {XPathBooleanOperator} ";
+    internal string Separator => $" {XPathBooleanOperator} ";
     public string? XPathTermsString
     {
-        get => XPathTerms.Count != 0 ? $"{ string.Join(separator, XPathTerms.Select(x => x.ToString()))}" : null;
+        get => XPathTerms.Count != 0 ? $"{ string.Join(Separator, XPathTerms.Select(x => x.ToString()))}" : null;
     }
     public string? XPathTermGroupsString
     {
-        get => XPathTermGroups.Count != 0 ? $"{ string.Join(separator, XPathTermGroups.Select(x => x.ToString()))}" : null;
+        get => XPathTermGroups.Count != 0 ? $"{ string.Join(Separator, XPathTermGroups.Select(x => x.ToString()))}" : null;
     }
     public override string ToString()
     {        
@@ -23,7 +23,7 @@ public class XPathTermGroup
         {
             (true, false) => $"({XPathTermsString!})",
             (false, true) => $"({XPathTermGroupsString!})",
-            (true, true) => $"({string.Join(separator, XPathTermsString, XPathTermGroupsString)})",
+            (true, true) => $"({string.Join(Separator, XPathTermsString, XPathTermGroupsString)})",
             (false, false) => string.Empty
         };
     }

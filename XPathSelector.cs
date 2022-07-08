@@ -19,7 +19,7 @@ public class XPathSelector : XPathTermGroup
         {
             (true, false)  => $"{prefix}{XPathTermsString!}{postfix}",
             (false, true)  => $"{prefix}{XPathTermGroupsString!}{postfix}",
-            (true, true)   => $"{prefix}{string.Join(separator, XPathTermsString, XPathTermGroupsString)}{postfix}",
+            (true, true)   => $"{prefix}{string.Join(Separator, XPathTermsString, XPathTermGroupsString)}{postfix}",
             (false, false) => string.Empty
         };
     }
