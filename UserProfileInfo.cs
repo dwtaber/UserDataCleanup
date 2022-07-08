@@ -5,22 +5,25 @@ public class UserProfileInfo
     public string KeyName { get; }
     public string RelativeKeyName { get; }
     public SecurityIdentifier? Sid { get; }
-    public string? ProfilePath { get; }
-    public bool ProfilePathExists => Directory.Exists(ProfilePath);
-    public bool PathIsInProfilesDirectory { get; }
-    public bool PathIsStandard { get; }
+    public DirectoryInfo? ProfileDirectory { get; }
+    public bool ProfilePathExists => ProfileDirectory?.Exists ?? false;
+    public bool ProfileIsInProfilesDirectory
+    {
+        get
+        {
+            var parent = ProfileDirectory?.Parent?.FullName;
+            var profiles = RegistryHelpers.ProfilesDirectory.FullName;
+            return string.Equals(parent, profiles, StringComparison.OrdinalIgnoreCase);
+        }
+    }
+    public bool PathIsStandard => UserName != null
+                               && ProfileDirectory != null
+                               && string.Equals(ProfileDirectory?.Name, UserName, StringComparison.OrdinalIgnoreCase);
     public string? DomainName { get; }
     public string? UserName { get; }
     public bool IsAccountSid { get; }
     public DateTime? LastSignOn { get; internal set; }
-    // public bool IsEqualDomainSid(SecurityIdentifier domainSid)
-    // {
-    //     return Sid != null ? Sid.IsEqualDomainSid(domainSid) : false;
-    // }
-    // public bool IsInComputerJoinedDomain()
-    // {
-    //     return IsEqualDomainSid(CommonMethods.GetComputerJoinedDomainSid());
-    // }
+
     public bool IsInComputerJoinedDomain()
     {
         return Sid != null && Sid.IsComputerJoinedDomain();
@@ -36,7 +39,8 @@ public class UserProfileInfo
         RelativeKeyName = Path.GetRelativePath(RegistryHelpers.HKLM, KeyName);
         RegistryHelpers.TryGetProfileSid(regKey, out var sid);
         Sid = sid;
-        ProfilePath = (string?)regKey.GetValue("ProfileImagePath");
+        var profilePath = (string?)regKey.GetValue("ProfileImagePath");
+
         IsAccountSid = Sid != null && Sid.IsAccountSid();
         if (Sid != null && Sid.TryTranslate(out var nta))
         {
@@ -49,14 +53,6 @@ public class UserProfileInfo
             DomainName = null;
             UserName = null;
         }
-
-        PathIsInProfilesDirectory = Directory.Exists(ProfilePath) && string.Equals(new DirectoryInfo(ProfilePath).Parent?.FullName,
-                                                                                    RegistryHelpers.ProfilesDirectory,
-                                                                                    StringComparison.OrdinalIgnoreCase);
-
-        PathIsStandard = string.Equals(ProfilePath,
-                                       Path.Join(RegistryHelpers.ProfilesDirectory, UserName),
-                                       StringComparison.OrdinalIgnoreCase);
     }
 
     public static List<UserProfileInfo> GetAll()

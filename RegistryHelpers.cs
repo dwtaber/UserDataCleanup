@@ -6,13 +6,13 @@ public class RegistryHelpers
     public const string ProfileListSubkey =
         @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList";
     public static RegistryKey ProfileList = Registry.LocalMachine.OpenSubKey(ProfileListSubkey)!;
-    public static string ProfilesDirectory = GetProfilesDirectory();
+    public static DirectoryInfo ProfilesDirectory = GetProfilesDirectory();
 
 
-    public static string GetProfilesDirectory()
+    public static DirectoryInfo GetProfilesDirectory()
     {
         var value = ProfileList.GetValue("ProfilesDirectory");
-        return value != null ? (string)value : throw new Exception();
+        return value != null ? new DirectoryInfo((string)value) : throw new Exception();
     }
 
     public static SecurityIdentifier GetProfileSid(RegistryKey ProfileKey)
